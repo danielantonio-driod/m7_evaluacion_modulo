@@ -21,4 +21,8 @@
       {% endfor %}
     </tbody>
   </table>
+  <p style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+    <a role="button" href="{% url 'etiquetas_crear' %}">Nueva etiqueta</a>
+    <a href="/admin/" class="secondary">Ir a Django admin</a>
+  </p>
 {% endblock %}

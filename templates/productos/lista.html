@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Productos{% endblock %}
+{% block content %}
+  <h2>Productos</h2>
+  <form method="get" class="grid">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Buscar por nombre o descripción" />
+    <select name="categoria">
+      <option value="">Todas las categorías</option>
+      {% for c in categorias %}
+        <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:'s' %}selected{% endif %}>{{ c.nombre }}</option>
+      {% endfor %}
+    </select>
+    <input type="number" name="min_price" step="0.01" value="{{ request.GET.min_price }}" placeholder="Precio mínimo" />
+    <input type="number" name="max_price" step="0.01" value="{{ request.GET.max_price }}" placeholder="Precio máximo" />
+    <label>
+      <input type="checkbox" name="sin_descripcion" value="1" {% if request.GET.sin_descripcion == '1' %}checked{% endif %} />
+      Sin descripción
+    </label>
+    <button type="submit">Filtrar</button>
+    {% if user.is_authenticated %}<a role="button" href="{% url 'productos_crear' %}">Nuevo Producto</a>{% endif %}
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Categoría</th>
+        <th>Etiquetas</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in productos %}
+        <tr>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.descripcion|default:'—' }}</td>
+          <td>${{ p.precio }}</td>
+          <td>{{ p.categoria.nombre }}</td>
+          <td>
+            {% for e in p.etiquetas.all %}
+              <span class="secondary">{{ e.nombre }}</span>{% if not forloop.last %}, {% endif %}
+            {% empty %}—{% endfor %}
+          </td>
+          <td>
+            <a href="{% url 'productos_detalle' p.pk %}">Ver</a>
+            {% if user.is_authenticated %}
+              | <a href="{% url 'productos_editar' p.pk %}">Editar</a>
+              | <a href="{% url 'productos_eliminar' p.pk %}">Eliminar</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6">No hay productos</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+    <nav>
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+    </nav>
+  {% endif %}
+{% endblock %}

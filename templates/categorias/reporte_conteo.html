@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Reporte de Categorías{% endblock %}
+{% block content %}
+  <h2>Reporte: Productos por Categoría</h2>
+  <table>
+    <thead><tr><th>Categoría</th><th># Productos</th></tr></thead>
+    <tbody>
+      {% for c in categorias %}
+        <tr><td>{{ c.nombre }}</td><td>{{ c.productos_count }}</td></tr>
+      {% empty %}
+        <tr><td colspan="2">Sin datos</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

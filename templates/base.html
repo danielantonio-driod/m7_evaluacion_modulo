@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Tienda{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+  <nav class="container-fluid">
+    <ul>
+      <li><a href="/" class="contrast" style="font-weight:700">Tienda</a></li>
+    </ul>
+    <ul>
+      <li><a href="{% url 'productos_lista' %}">Productos</a></li>
+      <li><a href="{% url 'categorias_lista' %}">Categorías</a></li>
+      <li><a href="{% url 'etiquetas_lista' %}">Etiquetas</a></li>
+      <li><a href="{% url 'reporte_categorias' %}">Reporte</a></li>
+      {% if user.is_authenticated %}
+        <li>Hola, {{ user.username }}</li>
+        <li><a href="{% url 'logout' %}">Salir</a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}">Ingresar</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <main class="container">
+    {% if messages %}
+      <div>
+        {% for m in messages %}<p>{{ m }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

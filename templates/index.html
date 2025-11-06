@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Inicio - Tienda{% endblock %}
+{% block content %}
+  <h1>Bienvenido a la Tienda</h1>
+  <p>Gestiona productos, categorías y etiquetas.</p>
+  <ul>
+    <li><a href="{% url 'productos_lista' %}">Ver Productos</a></li>
+    <li><a href="{% url 'categorias_lista' %}">Ver Categorías</a></li>
+    <li><a href="{% url 'etiquetas_lista' %}">Ver Etiquetas</a></li>
+  </ul>
+{% endblock %}

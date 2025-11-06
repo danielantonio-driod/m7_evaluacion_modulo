@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Detalle de Producto{% endblock %}
+{% block content %}
+  <h2>{{ producto.nombre }}</h2>
+  <p><strong>Descripción:</strong> {{ producto.descripcion|default:'—' }}</p>
+  <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+  <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
+  <p><strong>Etiquetas:</strong>
+    {% for e in producto.etiquetas.all %}
+      <span class="secondary">{{ e.nombre }}</span>{% if not forloop.last %}, {% endif %}
+    {% empty %}—{% endfor %}
+  </p>
+  <h3>Detalles</h3>
+  {% if producto.detalle %}
+    <p><strong>Dimensión:</strong> {{ producto.detalle.dimension|default:'—' }}</p>
+    <p><strong>Peso:</strong> {{ producto.detalle.peso|default:'—' }} kg</p>
+  {% else %}
+    <p>No hay detalles para este producto.</p>
+  {% endif %}
+  <p>
+    <a href="{% url 'productos_lista' %}">Volver</a>
+    {% if user.is_authenticated %}
+      | <a href="{% url 'productos_editar' producto.pk %}">Editar</a>
+      | <a href="{% url 'productos_eliminar' producto.pk %}">Eliminar</a>
+    {% endif %}
+  </p>
+{% endblock %}
